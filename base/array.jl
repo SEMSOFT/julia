@@ -2546,7 +2546,11 @@ vectorfilter(f, v::AbstractVector) = filter(f, v) # TODO: do we want this specia
 vectorfilter(f, v) = [x for x in v if f(x)]
 
 function _shrink(shrinker!, itr, itrs)
-    keep = shrinker!(Set(itr), itrs...)
+    if length(itrs) == 1
+        keep = shrinker!(Set(itr), itrs[1])
+    else
+        keep = shrinker!(Set(itr), itrs...)
+    end
     vectorfilter(_shrink_filter!(keep), itr)
 end
 
